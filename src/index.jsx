@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export default function AddProduct() {
+function AddProduct() {
   const { register, handleSubmit } = useForm();
   const [productData, setProductData] = useState({
     name: '',
@@ -17,8 +17,8 @@ export default function AddProduct() {
   };
 
   const onSubmit = (data) => {
-    console.log('Form data:', data);
-    alert('Form data submitted. Check the console.');
+    alert(`Form Data: ${JSON.stringify(data, null, 2)}`);
+    console.log(data);
   };
 
   return (
@@ -63,3 +63,75 @@ export default function AddProduct() {
     </form>
   );
 }
+
+function SignUpUser() {
+  const { register, handleSubmit, formState: { errors }, watch, setError } = useForm();
+  const passwordValue = watch('password', '');
+
+  const onSubmit = (data) => {
+    const { password, confirmPassword } = data;
+    if (password !== confirmPassword) {
+      setError('confirmPassword', { type: 'manual', message: 'Passwords dose not match' });
+      return;
+    }
+
+    alert(`Form Data: ${JSON.stringify(data, null, 2)}`);
+    console.log(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        type="text"
+        placeholder="First Name"
+        {...register("firstName", { required: true })}
+      />
+      {errors.firstName && <span>*</span>}
+
+      <input
+        type="text"
+        placeholder="Last Name"
+        {...register("lastName", { required: true })}
+      />
+      {errors.lastName && <span>*</span>}
+
+      <input
+        type="text"
+        placeholder="User Name"
+        {...register("userName", { required: true })}
+      />
+      {errors.userName && <span>*</span>}
+
+      <input
+        type="email"
+        placeholder="Email"
+        {...register("email", {
+          required: true,
+          pattern: /^\S+@\S+$/i,
+        })}
+      />
+      {errors.email && <span>*</span>}
+
+      <input
+        type="password"
+        placeholder="Password"
+        {...register("password", { required: true })}
+      />
+      {errors.password && <span>*</span>}
+
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        {...register("confirmPassword", {
+          required: true,
+          validate: (value) => value === passwordValue || "Passwords do not match",
+        })}
+      />
+      {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
+
+      <input type="submit" />
+    </form>
+  );
+}
+
+export { AddProduct, SignUpUser }; 
