@@ -71,7 +71,7 @@ function SignUpUser() {
   const onSubmit = (data) => {
     const { password, confirmPassword } = data;
     if (password !== confirmPassword) {
-      setError('confirmPassword', { type: 'manual', message: 'Passwords dose not match' });
+      setError('confirmPassword', { type: 'manual', message: 'Passwords Dose not Match' });
       return;
     }
 
